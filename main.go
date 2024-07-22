@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/nabinkatwal7/irlquest/utils"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	utils.LoadEnv()
+	utils.LoadDatabase()
 }
