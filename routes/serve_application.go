@@ -24,6 +24,7 @@ func ServeApplication(){
 
 	publicRoutes := router.Group("/auth")
 	publicRoutes.POST("/register", controller.Register)
+	publicRoutes.GET("/users", controller.GetAllUsers)
 
 	router.Run()
 	fmt.Println("Server started on port 8080")
