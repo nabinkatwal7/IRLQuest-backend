@@ -40,7 +40,7 @@ func FindUserByEmail(email string) (*User, error) {
 	}
 	return &user, err
 }
-
+ 
 func FindUserById(id uint) (*User, error) {
 	var user User
 	err := db.Database.Where("id = ?", id).First(&user).Error
