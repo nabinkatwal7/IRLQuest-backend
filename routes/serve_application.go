@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nabinkatwal7/irlquest/controller"
+	"github.com/nabinkatwal7/irlquest/middleware"
 )
 
 func ServeApplication(){
@@ -24,7 +25,11 @@ func ServeApplication(){
 
 	publicRoutes := router.Group("/auth")
 	publicRoutes.POST("/register", controller.Register)
+	publicRoutes.POST("/login", controller.Login)
 	publicRoutes.GET("/users", controller.GetAllUsers)
+
+	protectedRoutes := router.Group("/api")
+	protectedRoutes.Use(middleware.JWTAuthMiddleware())
 
 	router.Run()
 	fmt.Println("Server started on port 8080")
