@@ -9,4 +9,5 @@ func LoadDatabase(){
 	db.Connect()
 
 	db.Database.AutoMigrate(&model.User{})
+	db.Database.AutoMigrate(&model.Streak{})
 }

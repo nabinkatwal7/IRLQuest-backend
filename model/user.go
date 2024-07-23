@@ -13,6 +13,7 @@ type User struct {
 	Username string `gorm:"size:255;not null;unique" json:"username"`
 	Email string `gorm:"size:255;not null;unique" json:"email"`
 	Password string `gorm:"size:255; not null;" json:"-"`
+	Streaks []Streak `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"streaks"`
 }
 
 func (user *User) Save() (*User, error){
