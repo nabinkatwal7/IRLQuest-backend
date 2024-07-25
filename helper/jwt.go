@@ -65,7 +65,7 @@ func CurrentUser(context *gin.Context) (model.User, error){
 }
 
 func getToken(context *gin.Context)(*jwt.Token, error){
-	tokenString := getTokenFromRequest(context)
+	tokenString, _ := getTokenFromRequest(context)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token)(interface{}, error){
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -81,13 +81,16 @@ func getToken(context *gin.Context)(*jwt.Token, error){
 	return token, nil
 }
 
-func getTokenFromRequest(context *gin.Context) string{
+func getTokenFromRequest(context *gin.Context) (string, error) {
 	bearerToken := context.Request.Header.Get("Authorization")
-	splitToken := strings.Split(bearerToken, " ")
-
-	if len(splitToken)==2{
-		return splitToken[1]
+	if bearerToken == "" {
+		return "", errors.New("not logged in: no authorization header")
 	}
 
-	return splitToken[1]
+	splitToken := strings.Split(bearerToken, " ")
+	if len(splitToken) != 2 || splitToken[0] != "Bearer" {
+		return "", errors.New("not logged in: invalid token format")
+	}
+
+	return splitToken[1], nil
 }

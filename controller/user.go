@@ -12,3 +12,4 @@ func GetAllUsers(c *gin.Context){
 	db.Database.Find(&users)
 	c.JSON(200, users)
 }
+

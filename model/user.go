@@ -13,6 +13,8 @@ type User struct {
 	Username string `gorm:"size:255;not null;unique" json:"username"`
 	Email string `gorm:"size:255;not null;unique" json:"email"`
 	Password string `gorm:"size:255; not null;" json:"-"`
+	Avatar string `gorm:"size:255;" json:"avatar"`
+	Theme string `gorm:"size:255;" json:"theme"`
 	Streaks []Streak `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"streaks"`
 }
 
@@ -55,7 +57,7 @@ func FindUserByUsername (username string) (*User, error) {
 	var user User
 	err := db.Database.Where("username = ?", username).First(&user).Error
 	if err != nil {
-		return &User{}, err
+		return &User{}, err	
 	}
 	return &user, err
 }

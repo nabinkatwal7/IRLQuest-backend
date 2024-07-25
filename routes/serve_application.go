@@ -26,10 +26,18 @@ func ServeApplication(){
 	publicRoutes := router.Group("/auth")
 	publicRoutes.POST("/register", controller.Register)
 	publicRoutes.POST("/login", controller.Login)
+
 	publicRoutes.GET("/users", controller.GetAllUsers)
+
+	router.GET("/users", controller.GetAllUsers)
 
 	protectedRoutes := router.Group("/api")
 	protectedRoutes.Use(middleware.JWTAuthMiddleware())
+	protectedRoutes.GET("/users", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "Protected route accessed successfully",
+		})
+	})
 
 	router.Run()
 	fmt.Println("Server started on port 8080")
