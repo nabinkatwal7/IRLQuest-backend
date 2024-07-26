@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/google/uuid"
 	"github.com/nabinkatwal7/irlquest/db"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -8,6 +9,8 @@ import (
 
 type User struct {
 	gorm.Model
+	// ID       uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
+	ID string `gorm:"primaryKey"`
 	FirstName string `gorm:"size:255;not null;" json:"firstName"`
 	LastName string `gorm:"size:255;not null;" json:"lastName"`
 	Username string `gorm:"size:255;not null;unique" json:"username"`
@@ -16,6 +19,14 @@ type User struct {
 	Avatar string `gorm:"size:255;" json:"avatar"`
 	Theme string `gorm:"size:255;" json:"theme"`
 	Streaks []Streak `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"streaks"`
+	Goals []Goal `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"goals"`
+}
+
+
+func (user *User) BeforeCreate(tx *gorm.DB) (err error) {
+  // UUID version 4
+  user.ID = uuid.NewString()
+  return
 }
 
 func (user *User) Save() (*User, error){

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/nabinkatwal7/irlquest/model"
 )
 
@@ -17,6 +18,10 @@ func Register(c *gin.Context) {
 	}
 
 	fmt.Println(input)
+
+	id, _ := uuid.NewUUID()
+
+	fmt.Println(id)
 
 	user := model.User{
 		FirstName: input.FirstName,
